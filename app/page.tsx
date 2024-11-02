@@ -48,7 +48,7 @@ export default function Home() {
           word="TL;DW"
         />
         <p className="text-center text-lg text-purple-700 font-inter font-bold">
-        📺 Too Long; Didn't Watch: <span className="font-normal">Quickly summarize YouTube videos with AI! Save time and get the key points in seconds!</span>
+        📺 Too Long; Didn&#39;t Watch: <span className="font-normal">Quickly summarize YouTube videos with AI! Save time and get the key points in seconds!</span>
         </p>
         <YouTubeInput onVideoSubmit={handleVideoSubmit} isLoading={isLoading} />
         <SummaryDisplay 
