@@ -3,7 +3,7 @@ import { VideoInfo as VideoInfoType } from '@/lib/youtube'
 
 export default function VideoInfo({ videoId, title, authorName, authorUrl }: VideoInfoType) {
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6 flex items-start space-x-4 transform transition-all hover:scale-105">
+    <div className="bg-white shadow-lg rounded-lg p-4 md:p-6 flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-4 transform transition-all hover:scale-105">
       <Image
         src={`https://img.youtube.com/vi/${videoId}/0.jpg`}
         alt={title || 'YouTube Video Thumbnail'}
@@ -24,7 +24,7 @@ export default function VideoInfo({ videoId, title, authorName, authorUrl }: Vid
             {authorName}
           </a>
         </p>
-        <div className="flex space-x-4">
+        <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-4">
           <a
             href={`https://www.youtube.com/watch?v=${videoId}`}
             target="_blank"

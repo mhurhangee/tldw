@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { experimental_useObject as useObject } from 'ai/react'
 import { videoAnalysisSchema, VideoAnalysis } from './api/analyze/schema'
 import YouTubeInput from '@/components/YouTubeInput'
@@ -15,10 +15,16 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons'
 export default function Home() {
   const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null)
 
-  const { object, submit, isLoading } = useObject<VideoAnalysis>({
+  const { object, submit, isLoading, error } = useObject<VideoAnalysis>({
     api: '/api/analyze',
     schema: videoAnalysisSchema,
   })
+
+  useEffect(() => {
+    if (error) {
+      toast.error('An error occurred while fetching the object.')
+    }
+  }, [error])
 
   const handleVideoSubmit = async (id: string) => {
     try {
