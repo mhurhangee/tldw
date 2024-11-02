@@ -1,10 +1,17 @@
 import { z } from 'zod'
 
 export const videoAnalysisSchema = z.object({
-  title: z.string().describe('The title of the YouTube video'),
-  summary: z.string().describe('A concise summary of the video content'),
-  keyPoints: z.array(z.string()).describe('Key points or main ideas from the video'),
-  mainMessage: z.string().describe('The main message or takeaway from the video'),
+  emoji: z.string().describe('A relevant emoji to represent the video content'),
+  aiGeneratedTitle: z.string().describe('An AI-generated title summarizing the video content'),
+  executiveSummary: z.string().describe('A concise executive summary of the video content'),
+  keyPoints: z.array(z.string()).describe('Bullet points of key information from the video'),
+  conclusion: z.string().describe('A brief conclusion summarizing the main takeaways'),
 })
 
-export type VideoAnalysis = z.infer<typeof videoAnalysisSchema>
+export interface VideoAnalysis {
+  emoji: string
+  aiGeneratedTitle: string
+  executiveSummary: string
+  keyPoints: string[]
+  conclusion: string
+}
