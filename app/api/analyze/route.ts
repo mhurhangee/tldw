@@ -1,19 +1,39 @@
 import { NextResponse } from 'next/server'
-import { YoutubeTranscript } from 'youtube-transcript'
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 import { openai } from '@ai-sdk/openai'
 import { streamObject } from 'ai'
 import { videoAnalysisSchema } from './schema'
 
 export const maxDuration = 60
 
+class TranscriptAPI {
+  static async getTranscript(id: string, config = {}) {
+    const url = new URL('https://youtubetranscript.com')
+    url.searchParams.set('server_vid2', id)
+    
+    const response = await axios.get(url.toString(), config)
+    const $ = cheerio.load(response.data, undefined, false)
+    const err = $('error')
+  
+    if (err.length) throw new Error(err.text())
+    return $('transcript text').map((i, elem) => {
+      const $a = $(elem)
+      return {
+        text: $a.text(),
+        start: Number($a.attr('start')),
+        duration: Number($a.attr('dur'))
+      }
+    }).toArray()
+  }
+}
+
 export async function POST(req: Request) {
   const { videoId } = await req.json()
 
   try {
     console.log(`Attempting to fetch transcript for video ID: ${videoId}`)
-    const [transcript] = await Promise.all([
-      YoutubeTranscript.fetchTranscript(videoId)
-    ])
+    const transcript = await TranscriptAPI.getTranscript(videoId)
 
     console.log(`Successfully fetched transcript. Length: ${transcript.length}`)
     const fullTranscript = transcript.map((t) => t.text).join(' ')
